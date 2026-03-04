@@ -389,3 +389,42 @@ TEST_F(CSConsistTests, TestRemoveAllMembers) {
   ASSERT_EQ(csConsist->getFirstMember(), nullptr);
   EXPECT_EQ(csConsist->getMemberCount(), 0);
 }
+
+/**
+ * @brief Test get speed and direction with no Loco objects
+ */
+TEST_F(CSConsistTests, TestSpeedDirectionNoLoco) {
+  // Create the consist and add members
+  CSConsist *csConsist = new CSConsist();
+  csConsist->addMember(42, false);
+  csConsist->addMember(24, true);
+
+  // Speed should be zero when no Loco object exists, direction should be forward
+  EXPECT_EQ(csConsist->getSpeed(), 0);
+  EXPECT_EQ(csConsist->getDirection(), Direction::Forward);
+}
+
+/**
+ * @brief Test get speed and direction with lead Loco objects
+ */
+TEST_F(CSConsistTests, TestSpeedDirectionWithLoco) {  
+  // Create the consist and add members
+  CSConsist *csConsist = new CSConsist();
+  csConsist->addMember(42, false);
+  csConsist->addMember(24, true);
+
+  // Speed should be zero when no Loco object exists, direction should be forward
+  EXPECT_EQ(csConsist->getSpeed(), 0);
+  EXPECT_EQ(csConsist->getDirection(), Direction::Forward);
+
+  // Create lead Loco object and should be same results
+  Loco *loco42 = new Loco(42, LocoSource::LocoSourceEntry);
+  EXPECT_EQ(csConsist->getSpeed(), 0);
+  EXPECT_EQ(csConsist->getDirection(), Direction::Forward);
+
+  // Set speed/direction for Loco and CSConsist should match
+  loco42->setSpeed(10);
+  loco42->setDirection(Direction::Reverse);
+  EXPECT_EQ(csConsist->getSpeed(), 10);
+  EXPECT_EQ(csConsist->getDirection(), Direction::Reverse);
+}
