@@ -17,14 +17,9 @@
 .vscode
 
 # example VCS files
-examples/*/.pio
-examples/*/.pio/*.*
-examples/*/.vscode
-examples/*/.vscode/*.*
-examples/*/.gitignore
-examples/*/platform.ini
-
-examples/*/config.h
+examples/*
+docs/*
+test/*
 
 # Documentation build folders
 build

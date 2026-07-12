@@ -1,5 +1,0 @@
-Library
-=======
-
-.. doxygenindex:: 
-  :project: DCCEXProtocol
