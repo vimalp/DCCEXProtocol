@@ -20,7 +20,7 @@
 # example VCS files
 examples/*
 docs/*
-test/*
+
 
 # Documentation build folders
 build
