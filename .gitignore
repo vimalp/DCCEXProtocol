@@ -1,9 +1,8 @@
-*.DS_Store
-
 # Compiled Object files
 *.slo
 *.lo
 *.o
+*.DS_Store
 
 # Compiled Dynamic libraries
 *.so
@@ -21,6 +20,7 @@
 # example VCS files
 examples/*
 docs/*
+
 
 # Documentation build folders
 build
