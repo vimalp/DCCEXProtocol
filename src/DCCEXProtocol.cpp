@@ -107,7 +107,6 @@ void DCCEXProtocol::check() {
       // Read from our stream
       int r = _stream->read();
 
-
       if (_bufflen < _maxCmdBuffer - 1) {
         _cmdBuffer[_bufflen] = r;
         _bufflen++;
