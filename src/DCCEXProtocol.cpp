@@ -111,6 +111,8 @@ void DCCEXProtocol::check() {
         _console->println(r);
       }
  
+
+
       if (_bufflen < _maxCmdBuffer - 1) {
         _cmdBuffer[_bufflen] = r;
         _bufflen++;
@@ -238,6 +240,7 @@ void DCCEXProtocol::clearAllLists() {
   clearTurnoutList();
   clearTurntableList();
   clearRouteList();
+  clearSensorList();
 }
 
 void DCCEXProtocol::refreshAllLists() {
@@ -1521,7 +1524,6 @@ void DCCEXProtocol::_processSensorEntry(bool activate) { // <Q id> or <q id>
     new Sensor(id, activate);
     _sensorCount++;
     _receivedSensorList = true;
-    if (_delegate)
       _delegate->receivedSensorList();
   }
 }

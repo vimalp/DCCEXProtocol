@@ -21,6 +21,9 @@ public:
   // Notify when the turntable list is received
   MOCK_METHOD(void, receivedTurntableList, (), (override));
 
+  // Notify when the sensor list is received
+  MOCK_METHOD(void, receivedSensorList, (), (override));
+
   // Notify when an update to a Loco object is received
   MOCK_METHOD(void, receivedLocoUpdate, (Loco *), (override));
 
