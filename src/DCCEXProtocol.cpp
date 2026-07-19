@@ -1518,6 +1518,7 @@ void DCCEXProtocol::_processSensorEntry(bool activate) { // <Q id> or <q id>
     new Sensor(id, activate);
     _sensorCount++;
     _receivedSensorList = true;
+    if (_delegate)
       _delegate->receivedSensorList();
   }
 }
