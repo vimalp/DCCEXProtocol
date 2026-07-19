@@ -431,6 +431,42 @@ TEST_F(DCCEXProtocolTests, getTurnoutAndTurntableList) {
 }
 
 /**
+ * @brief Test requesting sesors only
+ */
+TEST_F(DCCEXProtocolTests, getSensorList) {
+  // Request Sensor list only
+  // We expect ONLY the sensor to be requested first.
+  _dccexProtocol.getLists(false, false, false, false, true);
+  EXPECT_EQ(_stream.getOutput(), "<S>");
+  _stream.clearOutput();
+
+  // Simulate receiving the sensor list
+  // Each <Q ..> command calls the receivedSensorList() method
+  EXPECT_CALL(_delegate, receivedSensorList()).Times(2);
+  _stream << "<Q 100>";
+  _dccexProtocol.check();
+  EXPECT_EQ(_dccexProtocol.getSensorCount(), 1);
+
+  // Simulate receiving the sensor list and stream should now request second sensor value
+  _stream << "<q 101>";
+  _dccexProtocol.check();
+  EXPECT_EQ(_dccexProtocol.getSensorCount(), 2);
+
+  // send the same sensor Id as before. It should not increment the count
+  _stream << "<Q 101>";
+  _dccexProtocol.check();
+  EXPECT_EQ(_dccexProtocol.getSensorCount(), 2);
+ 
+  // receivedLists() should return true when all lists complete
+  EXPECT_FALSE(_dccexProtocol.receivedLists());
+  EXPECT_FALSE(_dccexProtocol.receivedRoster());
+  EXPECT_FALSE(_dccexProtocol.receivedTurnoutList());
+  EXPECT_FALSE(_dccexProtocol.receivedRouteList());
+  EXPECT_FALSE(_dccexProtocol.receivedTurntableList());
+  EXPECT_TRUE(_dccexProtocol.receivedSensorList());
+}
+
+/**
  * @brief Test requesting no lists should set receivedLists true
  */
 TEST_F(DCCEXProtocolTests, testRequestNoLists) {
