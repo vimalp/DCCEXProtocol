@@ -106,11 +106,7 @@ void DCCEXProtocol::check() {
     while (_stream->available()) {
       // Read from our stream
       int r = _stream->read();
-      if (_debug) {
-        _console->print("<- char: ");
-        _console->println(r);
-      }
- 
+
       if (_bufflen < _maxCmdBuffer - 1) {
         _cmdBuffer[_bufflen] = r;
         _bufflen++;
@@ -238,6 +234,7 @@ void DCCEXProtocol::clearAllLists() {
   clearTurnoutList();
   clearTurntableList();
   clearRouteList();
+  clearSensorList();
 }
 
 void DCCEXProtocol::refreshAllLists() {
