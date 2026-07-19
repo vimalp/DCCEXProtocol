@@ -453,6 +453,7 @@ TEST_F(DCCEXProtocolTests, getSensorList) {
   EXPECT_EQ(_dccexProtocol.getSensorCount(), 2);
 
   // send the same sensor Id as before. It should not increment the count
+  EXPECT_CALL(_delegate, receivedSensorState(101, false)).Times(1);
   _stream << "<Q 101>";
   _dccexProtocol.check();
   EXPECT_EQ(_dccexProtocol.getSensorCount(), 2);

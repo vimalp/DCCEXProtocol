@@ -289,7 +289,7 @@ public:
   /// @param turnoutListRequired Request the turnout list (true|false)
   /// @param routeListRequired Request the route list (true|false)
   /// @param turntableListRequired Request the turntable list (true|false)
-  /// @param sensorListRequired Request the Sensor list as defined by JMRI_SERSOR (true|false)
+  /// @param sensorListRequired Request the Sensor list as defined by JMRI_SERSOR or <S .. > commands(true|false)
   void getLists(bool rosterRequired = true, bool turnoutListRequired = true, bool routeListRequired = true,
                 bool turntableListRequired = true, bool sensorListRequired = true);
 

@@ -45,6 +45,9 @@ public:
   // Notify when a turnout state change is received
   MOCK_METHOD(void, receivedTurnoutAction, (int, bool), (override));
 
+  // Notify when a sensor state change is received
+  MOCK_METHOD(void, receivedSensorState, (int, bool), (override));
+
   // Notify when a turntable index change is received
   MOCK_METHOD(void, receivedTurntableAction, (int, int, bool), (override));
 
