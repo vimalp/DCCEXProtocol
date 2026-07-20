@@ -932,7 +932,7 @@ void DCCEXProtocol::_processCommand() {
         _receivedSensorList = true;
     }
     else {
-       _processSensorEntry(DCCEXInbound::getOpcode() == 'q');
+       _processSensorEntry(DCCEXInbound::getOpcode() == 'Q');
     }
     break;
 
@@ -1502,8 +1502,8 @@ bool DCCEXProtocol::_requestedSensors() { return _sensorListRequested; }
 // Also, there is no defined 'end of list' response. So for each response received,
 // the _recievedSensorList is set to true and the sensor count is updated.
 // The client code must wait for about 100 ms before checking sensor list.
-// <Q id>:   a sensor id with inactive status
-// <q id>:   a sensor id with active status
+// <Q id>:   a sensor id with active status
+// <q id>:   a sensor id with inactive status
 //
 void DCCEXProtocol::_processSensorEntry(bool activate) { // <Q id> or <q id>
   // there is only 1 parameter for the sensor list request
