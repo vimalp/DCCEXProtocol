@@ -19,10 +19,6 @@
 *~
 .vscode
 
-# example VCS files
-examples/*
-docs/*
-
 
 # Documentation build folders
 build
