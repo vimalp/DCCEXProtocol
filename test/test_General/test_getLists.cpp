@@ -30,7 +30,6 @@
 TEST_F(DCCEXProtocolTests, getListsSequentialFlow) {
   // Request all lists
   // We expect ONLY the roster to be requested first.
-  _dccexProtocol.setDebug(true);
   _dccexProtocol.getLists(true, true, true, true, true);
   EXPECT_EQ(_stream.getOutput(), "<J R>");
   _stream.clearOutput();
