@@ -677,6 +677,9 @@ void DCCEXProtocol::refreshTurntableList() {
 
 
 // sensor methods
+void DCCEXProtocol::requestSensorStates() {
+  _sendOpcode('Q');
+}
 
 int DCCEXProtocol::getSensorCount() { return _sensorCount; }
 

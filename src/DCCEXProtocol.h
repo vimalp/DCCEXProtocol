@@ -183,7 +183,7 @@ public:
   /// @param position Index of the position it is moving (or has moved) to
   /// @param moving Whether it is moving or not (true|false)
   virtual void receivedTurntableAction(int turntableId, int position, bool moving) {}
-
+ 
   /// @brief Notify when a sensor index change is received
   /// @param sensorId ID of the turntable
   /// @param active Whether the sensor is active or not (true|false)
@@ -677,6 +677,11 @@ public:
   /// @brief Get the number of sensor entries
   /// @return Number of sensor received
   int getSensorCount();
+
+  /// @brief Request current state of all defined sensors from CS
+  /// @brief The sensor values are returned via <Q..>/<q..> commands
+  /// @brief The sensor values can be accessed via the sensor list.
+  void requestSensorStates();
 
   /// @brief Check if sensor list has been received
   /// @return true|false

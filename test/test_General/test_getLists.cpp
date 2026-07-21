@@ -433,6 +433,7 @@ TEST_F(DCCEXProtocolTests, getTurnoutAndTurntableList) {
  * @brief Test requesting sesors only
  */
 TEST_F(DCCEXProtocolTests, getSensorList) {
+  _dccexProtocol.setDebug(true);
   // Request Sensor list only
   // We expect ONLY the sensor to be requested first.
   _dccexProtocol.getLists(false, false, false, false, true);
@@ -456,6 +457,17 @@ TEST_F(DCCEXProtocolTests, getSensorList) {
   _stream << "<Q 101>";
   _dccexProtocol.check();
   EXPECT_EQ(_dccexProtocol.getSensorCount(), 2);
+ 
+  // check getting sensor states
+  EXPECT_CALL(_delegate, receivedSensorList()).Times(0);
+  EXPECT_CALL(_delegate, receivedSensorState(100, true)).Times(1);
+  EXPECT_CALL(_delegate, receivedSensorState(101, false)).Times(1);
+  _stream.clearOutput();
+  _dccexProtocol.requestSensorStates();
+  _stream << "<Q 100>";
+  _dccexProtocol.check();
+  _stream << "<q 101>"; 
+  _dccexProtocol.check();
  
   // receivedLists() should return true when all lists complete
   EXPECT_FALSE(_dccexProtocol.receivedLists());
