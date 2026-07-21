@@ -929,7 +929,7 @@ void DCCEXProtocol::_processCommand() {
     }
     break;
 
-  case 'Q':   // sensor responses Q: inactive, q: active
+  case 'Q':   // sensor responses Q: active, q: inactive
   case 'q':
     if (DCCEXInbound::getParameterCount() == 0) { // Empty turntable list
         _receivedSensorList = true;
