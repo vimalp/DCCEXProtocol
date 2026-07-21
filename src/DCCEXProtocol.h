@@ -291,7 +291,7 @@ public:
   /// @param turntableListRequired Request the turntable list (true|false)
   /// @param sensorListRequired Request the Sensor list as defined by JMRI_SERSOR or <S .. > commands(true|false)
   void getLists(bool rosterRequired = true, bool turnoutListRequired = true, bool routeListRequired = true,
-                bool turntableListRequired = true, bool sensorListRequired = true);
+                bool turntableListRequired = true, bool sensorListRequired = false);
 
   /// @brief Check if all lists have been received (roster, routes, turnouts, turntables)
   /// @return true|false
@@ -769,7 +769,7 @@ public:
   /// @brief set a DCC signal accesory's aspect (DCC Extended Accessory)
   /// @param linearAddress Linear address of the DCC accessory
   /// @param aspect Aspect value of the signal (value depends on DCC signal decoder)
-  void setSignalAspec(int linearAddress, int aspect);
+  void setSignalAspect(int linearAddress, int aspect);
  
   /// @brief Request the number of supported cabs(locos)
   void getNumberSupportedLocos();

@@ -33,7 +33,7 @@ Sensor *Sensor::_first = nullptr;
 
 Sensor::Sensor(int id, bool active) {
   _id = id;
-  active = active;
+  _active = active;
   _name = nullptr;
   _next = nullptr;
   if (!_first) {

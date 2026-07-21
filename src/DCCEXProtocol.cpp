@@ -767,6 +767,10 @@ void DCCEXProtocol::activateLinearAccessory(int linearAddress) { _sendTwoParams(
 
 void DCCEXProtocol::deactivateLinearAccessory(int linearAddress) { _sendTwoParams('a', linearAddress, 0); }
 
+void DCCEXProtocol::setSignalAspect(int linearAddress, int aspect) {
+  _sendTwoParams('A', linearAddress, aspect);
+}
+
 void DCCEXProtocol::getNumberSupportedLocos() { _sendOpcode('#'); }
 
 // CV programming methods
@@ -931,7 +935,7 @@ void DCCEXProtocol::_processCommand() {
 
   case 'Q':   // sensor responses Q: active, q: inactive
   case 'q':
-    if (DCCEXInbound::getParameterCount() == 0) { // Empty turntable list
+    if (DCCEXInbound::getParameterCount() == 0) { // Empty sensor list
         _receivedSensorList = true;
     }
     else {
