@@ -69,6 +69,10 @@ TEST_F(SensorTests, createSensorList) {
   EXPECT_EQ(Sensor102->getId(), 102);
   EXPECT_STREQ(Sensor102->getName(), "");
   EXPECT_FALSE(Sensor102->getActive());
+
+  delete Sensor101;
+  delete Sensor100;
+  delete Sensor102;
 }
 
 
