@@ -674,7 +674,6 @@ void DCCEXProtocol::rotateTurntable(int turntableId, int position, int activity)
       _sendTwoParams('I', turntableId, position);
     }
   }
-  _sendCommand();
 }
 
 void DCCEXProtocol::clearTurntableList() {
