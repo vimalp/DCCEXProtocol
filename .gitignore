@@ -39,3 +39,9 @@ _build
 # Coverage info file
 lcov.info
 test_coverage/
+
+# File systems
+.DS_Store
+
+# Python cache
+__pycache__/

@@ -38,6 +38,7 @@ These objects include:
 - Route entries
 - Turnouts/Points
 - Turntables (noting that these objects are only available in development versions)
+- Command Station Consist (CSConsist) entries
 
 This means the client software does not need to explicitly manage the state of these objects whilever the ```check()``` method mentioned above is called appropriately.
 
@@ -53,13 +54,43 @@ Documentation of the DCCEXProtocol library is available via the [DCC-EX website]
 
 For contributors wishing to build local copies of the documentation while updating the library, here is the very high level process of the requirements to make this work on Windows:
 
-- Install [MSYS2 C++](https://code.visualstudio.com/docs/cpp/config-mingw#_prerequisites) compilers
-- Install [CMake](https://cmake.org/download/) and ensure you select the option to add to your user path
 - Install [Doxygen](https://www.doxygen.nl/download.html) and once complete, add to your user path
-- Install the CMake Tools extension in VSCode
 - Setup a Python virtual environment with "virtualenv venv" and activate with "venv\scripts\activate"
 - Install required Python modules with "pip3 install -r requirements.txt"
 - Change to the docs directory and run "make html"
+
+## Testing
+
+The library has a comprehensive test suite written using GoogleTest, which is run automatically on every push and pull request via the GitHub "PlatformIO Testing" workflow (see tests.yml in the repository).
+
+As of version 1.2.1, the tests have been migrated from cmake across to PlatformIO's native test environment, which simplifies the dependencies and process of running the tests. To run them, you will need PlatformIO installed, either through the VSCode IDE or installed within a Linux/macOS environment directly. PlatformIO Core should be all that is required to be installed.
+
+The recommendation to run the tests on Linux or macOS remains due to the ability to check for memory leaks and invalid pointers:
+
+```bash
+pio test -e native_test
+```
+
+If you do run on Windows, run this command instead, note that it disables the relevant sanitiser checks:
+
+```bash
+pio test -e native_test_windows
+```
+
+If you are running on macOS, use this environment instead, which removes the GCC-specific coverage flags that are not supported by the Apple clang toolchain:
+
+```bash
+pio test -e native_test_macos
+```
+
+To generate test coverage, use the `generate_test_coverage.py` script. The environment is auto-selected based on the platform (`native_test_macos` on macOS, `native_test` elsewhere) and can be overridden with `-e`:
+
+```bash
+python3 generate_test_coverage.py
+python3 generate_test_coverage.py -e native_test_macos
+```
+
+For full details, including how to monitor test coverage, see the [Library Tests](https://dcc-ex.com/DCCEXProtocol/tests.html) documentation.
 
 ----
 
