@@ -861,14 +861,12 @@ private:
 
   // Roster methods
   void _getRoster();
-  bool _requestedRoster();
   void _processRosterList();
   void _requestRosterEntry(int address);
   void _processRosterEntry();
 
   // Turnout methods
   void _getTurnouts();
-  bool _requestedTurnouts();
   void _processTurnoutList();
   void _requestTurnoutEntry(int id);
   void _processTurnoutEntry();
@@ -876,14 +874,12 @@ private:
 
   // Route methods
   void _getRoutes();
-  bool _requestedRoutes();
   void _processRouteList();
   void _requestRouteEntry(int id);
   void _processRouteEntry();
 
   // Turntable methods
   void _getTurntables();
-  bool _requestedTurntables();
   void _processTurntableList();
   void _requestTurntableEntry(int id);
   void _processTurntableEntry();
