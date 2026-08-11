@@ -782,6 +782,8 @@ void DCCEXProtocol::setFastClock(int minutes, int speedFactor) {
 
 void DCCEXProtocol::requestFastClockTime() { _sendOneParam('J', 'C'); }
 
+void DCCEXProtocol::requestJMRISensorList() { _sendOpcode('Q'); }
+
 // Private methods
 // Protocol and server methods
 
@@ -839,6 +841,13 @@ void DCCEXProtocol::_processCommand() {
     if (DCCEXInbound::isTextParameter(0) || DCCEXInbound::getParameterCount() > 2)
       break;
     _processTrackPower();
+    break;
+
+  case 'Q': // JMRI sensor activated
+  case 'q': // JMRI sensor deactivated
+    if (DCCEXInbound::getParameterCount() == 1 && !DCCEXInbound::isTextParameter(0)) {
+      _processJMRISensorBroadcast(DCCEXInbound::getOpcode());
+    }
     break;
 
   case '=': // Track type broadcast
@@ -1583,6 +1592,19 @@ void DCCEXProtocol::_processFastClockTime() { // <jC minutes>
     return;
 
   _delegate->receivedFastClockTime(DCCEXInbound::getNumber(1));
+}
+
+// JMRI sensor methods
+void DCCEXProtocol::_processJMRISensorBroadcast(byte opcode) { // <Q|q id>
+  if (!_delegate)
+    return;
+
+  int id = DCCEXInbound::getNumber(0);
+
+  if (id < 1)
+    return;
+
+  _delegate->receivedJMRISensorBroadcast(id, opcode == 'Q' ? JMRISensorState::Activated : JMRISensorState::Deactivated);
 }
 
 // Helper methods to build the outbound command
