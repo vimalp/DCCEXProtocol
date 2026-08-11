@@ -71,6 +71,12 @@ enum MomentumAlgorithm {
   Power,  // Speed difference
 };
 
+// Valid JMRI sensor states
+enum JMRISensorState {
+  Activated,
+  Deactivated,
+};
+
 /// @brief Nullstream class for initial DCCEXProtocol instantiation to direct streams to nothing
 class NullStream : public Stream {
 public:
@@ -229,6 +235,13 @@ public:
    * @param minutes Time in minutes
    */
   virtual void receivedFastClockTime(int minutes) {}
+
+  /**
+   * @brief Notify when a JMRI sensor broadcast has been received
+   * @param id ID of the JMRI sensor
+   * @param state JMRISensorState enum value
+   */
+  virtual void receivedJMRISensorBroadcast(int id, JMRISensorState state) {}
 
   /// @brief Default destructor for DCCEXProtocolDelegate
   virtual ~DCCEXProtocolDelegate() = default;
@@ -793,6 +806,13 @@ public:
    */
   void requestFastClockTime();
 
+  // JMRI Sensor Methods
+
+  /**
+   * @brief Request the list of JMRI sensors
+   */
+  void requestJMRISensorList();
+
   // Attributes
 
   /// @brief Linked list of Loco objects to form the roster, call roster->getFirst()
@@ -841,14 +861,12 @@ private:
 
   // Roster methods
   void _getRoster();
-  bool _requestedRoster();
   void _processRosterList();
   void _requestRosterEntry(int address);
   void _processRosterEntry();
 
   // Turnout methods
   void _getTurnouts();
-  bool _requestedTurnouts();
   void _processTurnoutList();
   void _requestTurnoutEntry(int id);
   void _processTurnoutEntry();
@@ -856,14 +874,12 @@ private:
 
   // Route methods
   void _getRoutes();
-  bool _requestedRoutes();
   void _processRouteList();
   void _requestRouteEntry(int id);
   void _processRouteEntry();
 
   // Turntable methods
   void _getTurntables();
-  bool _requestedTurntables();
   void _processTurntableList();
   void _requestTurntableEntry(int id);
   void _processTurntableEntry();
@@ -886,6 +902,9 @@ private:
   // Fast clock methods
   void _processSetFastClock();
   void _processFastClockTime();
+
+  // JMRI sensor methods
+  void _processJMRISensorBroadcast(byte opcode);
 
   // Attributes
   int _rosterCount = 0;                               // Count of roster items received
