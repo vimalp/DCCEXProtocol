@@ -485,3 +485,25 @@ TEST_F(SignalTests, receiveSignalBroadcast) {
 
   _dccexProtocol.clearSignalList();
 }
+
+/*
+ * Test case where the signal list featuer is not supported 
+ * by an older CS. Even if a list is requested by getList, 
+ * no signal list will be received and list will remain empty.
+*/
+TEST_F(SignalTests, signalListNotSupportedByCS) {
+  // Request and receive the signal list
+  _dccexProtocol.getLists(false, false, false, false, true);
+  _getListsGetServerVersion("4.10.9");    // send an older CS version.
+
+  EXPECT_CALL(_delegate, receivedSignalList()).Times(Exactly(0));
+  _dccexProtocol.getLists(false, false, false, false, true);
+  EXPECT_EQ(_stream.getOutput(), "");
+
+  EXPECT_FALSE(_dccexProtocol.receivedSignalList());
+  ASSERT_EQ(_dccexProtocol.getSignalCount(), 0);
+  ASSERT_EQ(Signal::getFirst(), nullptr);
+
+  _dccexProtocol.clearSignalList();
+}
+
