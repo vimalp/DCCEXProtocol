@@ -104,6 +104,9 @@ TEST_F(TestHarnessNoDelegate, TestGetLists) {
   // Request all lists
   // We expect ONLY the roster to be requested first.
   _dccexProtocol.getLists(true, true, true, true, true);
+  _getListsGetServerVersion();
+
+  _dccexProtocol.getLists(true, true, true, true, true);
   EXPECT_EQ(_stream.getOutput(), "<J R>");
   _stream.clearOutput();
 

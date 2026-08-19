@@ -78,6 +78,11 @@ enum JMRISensorState {
   Deactivated,
 };
 
+enum FeatureNames {
+  FEATURE_SIGNAL_LIST
+};
+
+
 /// @brief Nullstream class for initial DCCEXProtocol instantiation to direct streams to nothing
 class NullStream : public Stream {
 public:
@@ -882,10 +887,12 @@ private:
   void _init();
   void _sendCommand();
   void _processCommand();
+  void _getServerVersion();
   void _processServerDescription();
   void _processMessage();
   void _processScreenUpdate();
   void _sendHeartbeat();
+  bool _isFeatureSupported(FeatureNames feature_name);
 
   // Consist/loco methods
   void _processLocoBroadcast();
@@ -979,6 +986,7 @@ private:
   char _inputBuffer[512];                             // Char array for input buffer
   int _nextChar;                                      // where the next character to be read goes in the buffer
   bool _receivedVersion = false;                      // Flag that server version has been received
+  bool _versionRequested = false;                     // flat that a server version has been requested.
   bool _receivedLists = false;                        // Flag if all requested lists have been received
   bool _rosterRequested = false;                      // Flag that roster has been requested
   bool _receivedRoster = false;                       // Flag that roster has been received

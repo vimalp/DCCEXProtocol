@@ -44,6 +44,17 @@ Function/method prefixes
 static const int MIN_SPEED = 0;
 static const int MAX_SPEED = 126;
 
+typedef struct {
+  FeatureNames  featureName;
+  int           minVersion[3];    // minimum version needed to support this feature
+} FeatureSupport_t;
+
+static FeatureSupport_t featuresSupported[] = {
+  {FEATURE_SIGNAL_LIST, {5, 7, 7}},
+};
+#define NUM_FEATURE_SUPPORTED   (sizeof(featuresSupported)/sizeof(featuresSupported[0]))
+
+
 // DCCEXProtocol class
 // Public methods
 // Protocol and server methods
@@ -146,10 +157,22 @@ void DCCEXProtocol::sendCommand(const char *cmd) {
 
 // Gated method to get the required lists to avoid overloading the buffer
 void DCCEXProtocol::getLists(bool rosterRequired, bool turnoutListRequired, bool routeListRequired,
-                             bool turntableListRequired, bool requestSignalUpdates) {
+                             bool turntableListRequired, bool signalListRequired) {
   // Serial.println(F("getLists()"));
   if (_receivedLists)
     return;
+
+  // start getList by getting the CS version. 
+  // The version will be used later to enable/disable certain features
+  if (!_versionRequested) {
+    _getServerVersion();
+    return;
+  }
+
+  // If we are still waiting for server version, do no continue
+  if (_versionRequested && !_receivedVersion) {
+    return;
+  }
 
   // Start with roster if it's required and get it, do not continue
   if (rosterRequired && !_rosterRequested) {
@@ -195,15 +218,17 @@ void DCCEXProtocol::getLists(bool rosterRequired, bool turnoutListRequired, bool
     return;
   }
 
+  if (_isFeatureSupported(FEATURE_SIGNAL_LIST)) {
    // If we get here, get signals if required
-  if (requestSignalUpdates && !_signalListRequested) {
-    _getSignals();
-    return;
-  }
+    if (signalListRequired && !_signalListRequested) {
+      _getSignals();
+      return;
+    }
 
-  // If we're still waiting for signals, do not continue
-  if (_signalListRequested && !_receivedSignalList) {
-    return;
+    // If we're still waiting for signals, do not continue
+    if (_signalListRequested && !_receivedSignalList) {
+      return;
+    }
   }
 
   // If we get here, all lists received
@@ -1022,6 +1047,12 @@ void DCCEXProtocol::_processCommand() {
   }
 }
 
+
+void DCCEXProtocol::_getServerVersion() {
+  requestServerVersion();
+  _versionRequested = true;
+}
+
 void DCCEXProtocol::_processServerDescription() { //<iDCCEX version / microprocessorType / MotorControllerType /
                                                   // buildNumber>
   char *description{DCCEXInbound::getTextParameter(0) + 7};
@@ -1084,6 +1115,28 @@ void DCCEXProtocol::_sendHeartbeat() {
     _sendOpcode('#');
   }
 }
+
+bool DCCEXProtocol::_isFeatureSupported(FeatureNames featureName) {
+  for (int i=0; i < NUM_FEATURE_SUPPORTED; ++i) {
+    if (featuresSupported[i].featureName == featureName) {
+      int* minVersion = featuresSupported[i].minVersion;
+      if      (minVersion[0] < _version[0])     return true;    // maj server version higher
+      else if (minVersion[0] > _version[0])     return false;   // maj server version lower
+      else {     
+          // maj server version same as feature version. check mid version
+        if      (minVersion[1] < _version[1])   return true;    // mid server version higher
+        else if (minVersion[1] > _version[1])   return false;   // mid server version lower
+        else {     
+            // mid server version same as feature version. check min version
+          if      (minVersion[2] > _version[2]) return false;  // min server version lower
+          else                                  return true;   // min server version higher or same
+        }
+      }
+    }
+  }
+  return true;    // feature name not in supported table. Assume supported. 
+}
+
 
 // Consist/loco methods
 

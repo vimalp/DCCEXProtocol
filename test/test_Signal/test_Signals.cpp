@@ -231,6 +231,9 @@ TEST_F(SignalTests, signalClearSignalListEmptiesList) {
 TEST_F(SignalTests, refreshSignalListResetsAndReRequests) {
   // Request and receive the signal list
   _dccexProtocol.getLists(false, false, false, false, true);
+  _getListsGetServerVersion();
+
+  _dccexProtocol.getLists(false, false, false, false, true);
   EXPECT_EQ(_stream.getOutput(), "<J S>");
   _stream.clearOutput();
 
@@ -342,6 +345,9 @@ TEST_F(SignalTests, setSignalNameAndGetName) {
  */
 TEST_F(SignalTests, setSignalStateAndAspect) {
   _dccexProtocol.getLists(false, false, false, false, true);
+  _getListsGetServerVersion();
+
+  _dccexProtocol.getLists(false, false, false, false, true);
   EXPECT_EQ(_stream.getOutput(), "<J S>");
   _stream.clearOutput();
 
@@ -407,6 +413,9 @@ TEST_F(SignalTests, removeSignalNotInListLeavesListIntact) {
 TEST_F(SignalTests, receiveSignalListAndState) {
   // Request and receive the signal list
   _dccexProtocol.getLists(false, false, false, false, true);
+  _getListsGetServerVersion();
+
+  _dccexProtocol.getLists(false, false, false, false, true);
   EXPECT_EQ(_stream.getOutput(), "<J S>");
   _stream.clearOutput();
 
@@ -437,6 +446,9 @@ TEST_F(SignalTests, receiveSignalListAndState) {
 
 TEST_F(SignalTests, receiveSignalBroadcast) {
    // Request and receive the signal list
+  _dccexProtocol.getLists(false, false, false, false, true);
+  _getListsGetServerVersion();
+  
   _dccexProtocol.getLists(false, false, false, false, true);
   EXPECT_EQ(_stream.getOutput(), "<J S>");
   _stream.clearOutput();
