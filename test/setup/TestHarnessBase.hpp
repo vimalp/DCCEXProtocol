@@ -63,7 +63,7 @@ protected:
   // Helper finction to return server version for all getLists calls
   // This is common for all getLists in all test classes.
   // NOTE: the default version number must be updated to reflect latest iDCCEX version.
-  void _getListsGetServerVersion(const char* cs_version = "5.7.7")
+  void _getListsGetServerVersion(const char* cs_version = "5.9.0")
   {
       EXPECT_EQ(_stream.getOutput(), "<s>");
       _stream.clearOutput();

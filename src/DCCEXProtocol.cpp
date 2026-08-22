@@ -49,8 +49,9 @@ typedef struct {
   int           minVersion[3];    // minimum version needed to support this feature
 } FeatureSupport_t;
 
+// feature support table that matches each feature with the minimum CS version that supports it.
 static FeatureSupport_t featuresSupported[] = {
-  {FEATURE_SIGNAL_LIST, {5, 7, 7}},
+  {FEATURE_SIGNAL_LIST, {5, 9, 0}},
 };
 #define NUM_FEATURE_SUPPORTED   (sizeof(featuresSupported)/sizeof(featuresSupported[0]))
 
